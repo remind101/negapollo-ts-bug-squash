@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 import express from 'express';
 import proxy from 'proxy-middleware';
 import rollbar from 'lib/rollbar';
@@ -51,6 +52,10 @@ function initApp() {
   });
 
   return app;
+}
+
+if (env === 'development') {
+  dotenv.config({ path: '.env.development' });
 }
 
 const app = initApp();

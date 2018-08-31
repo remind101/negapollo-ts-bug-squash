@@ -18,6 +18,7 @@
     "babel-eslint": "^9.0.0",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
+    "dotenv": "^6.0.0",
     "eslint-import-resolver-node": "^0.3.1",
     "express": "^4.16.3",
     "lodash": "^4.17.10",

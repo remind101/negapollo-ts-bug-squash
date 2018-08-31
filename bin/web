@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+export NODE_PATH=build/
+exec node build/server
