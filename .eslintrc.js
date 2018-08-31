@@ -10,7 +10,7 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.ts'],
-      parse: 'typescript-eslint-parser',
+      parser: 'typescript-eslint-parser',
       plugins: ['typescript'],
       rules: {
         'no-undef': 'off',
