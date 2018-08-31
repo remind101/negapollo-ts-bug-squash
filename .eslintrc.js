@@ -1,12 +1,43 @@
 module.exports = {
   extends: ['airbnb-base', 'prettier'],
+  parser: 'babel-eslint',
   plugins: ['jest'],
   env: {
     jest: true,
     es6: true,
     node: true,
   },
+  overrides: [
+    {
+      files: ['**/*.ts'],
+      parse: 'typescript-eslint-parser',
+      plugins: ['typescript'],
+      rules: {
+        'no-undef': 'off',
+        'no-unused-vars': 'off',
+        'no-restricted-globals': 'off',
+        'import-name': true,
+      },
+    },
+  ],
+  settings: {
+    'import/resolver': {
+      node: {
+        moduleDirectory: ['node_modules', 'src'],
+      },
+      'eslint-import-resolver-typescript': {
+        moduleDirectory: ['node_modules', 'src'],
+      },
+    },
+  },
   rules: {
+    // modifications for typescript
+    'import/extensions': '.ts',
+    strict: 0,
+    'prefer-arrow-callback': 'warn',
+    'prefer-template': 'warn',
+    camelcase: 'warn',
+    // jest
     'jest/no-disabled-tests': 'warn',
     'jest/no-focused-tests': 'error',
     // sometimes you want to name a param that won't be used, for documentation

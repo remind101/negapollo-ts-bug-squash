@@ -1,4 +1,4 @@
-const Rollbar = require('rollbar');
+import Rollbar from 'rollbar';
 
 export default new Rollbar({
   accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
