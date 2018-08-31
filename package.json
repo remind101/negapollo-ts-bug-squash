@@ -83,7 +83,7 @@
   },
   "scripts": {
     "start": "NODE_PATH=src/ nodemon src/server.ts --exec babel-node -- --extensions .ts",
-    "dev": "NODE_ENV=development DEBUG=\"API,error\" yarn start",
+    "dev": "NODE_ENV=development yarn start",
     "build": "babel src -d build --copy-files --extensions .ts",
     "prod": "node build/server",
     "test": "jest --forceExit",
