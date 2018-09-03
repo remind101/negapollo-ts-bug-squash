@@ -1,0 +1,50 @@
+version: 2
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - docker_image:
+          context: docker-hub
+      - test
+
+jobs:
+
+  # docker-build is a small script for building, tagging and pushing docker images within CircleCI.
+  docker_image:
+    docker:
+      - image: remind101/docker-build@sha256:d8087702ebd201855dd98dff98bb122a2cb18149edb1e1d6ee3b09e635b0f43b
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker-build # build, tag and push
+
+  test:
+
+    docker:
+      # https://hub.docker.com/r/remind101/buildpack-negapollo/
+      # To update see .circleci/README.md
+      - image: remind101/buildpack-negapollo:node109
+
+    working_directory: ~/r101-negapollo
+
+    resource_class: small
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+
+      - run: yarn install --frozen-lockfile --prefer-offline --no-progress
+
+      - save_cache:
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - run: yarn prettier:check
+      - run: yarn lint
+      - run: yarn type-check
+      - run: yarn test --ci --maxWorkers 3
