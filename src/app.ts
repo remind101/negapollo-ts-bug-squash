@@ -28,6 +28,7 @@ export default function initApp() {
       Object.assign({}, apolloUrl, {
         cookieRewrite: cookieDomain,
         pathname: '/graphql',
+        headers: { 'X-Proxied-Graphql-Request': '1' },
       }),
     ),
   );
@@ -38,6 +39,7 @@ export default function initApp() {
       Object.assign({}, apolloUrl, {
         cookieRewrite: cookieDomain,
         pathname: '/graphiql',
+        headers: { 'X-Proxied-Graphql-Request': '1' },
       }),
     ),
   );
