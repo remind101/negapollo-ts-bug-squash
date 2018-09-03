@@ -7,7 +7,6 @@
     "noEmit": true,
     "moduleResolution": "node",
     "baseUrl": "./src",
-    "types": ["node"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
   }, 
