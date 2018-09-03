@@ -104,8 +104,5 @@
   "bugs": {
     "url": "https://github.com/remind101/r101-negapollo/issues"
   },
-  "homepage": "https://github.com/remind101/r101-negapollo#readme",
-  "resolutions": {
-    "eslint-scope": "3.7.1"
-  }
+  "homepage": "https://github.com/remind101/r101-negapollo#readme"
 }
