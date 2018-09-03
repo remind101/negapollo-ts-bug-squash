@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import initApp from 'app';
 
 const GRAPHQL_PORT = process.env.PORT || 8080;
 
