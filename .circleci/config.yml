@@ -28,6 +28,10 @@ jobs:
 
     working_directory: ~/r101-negapollo
 
+    environment:
+      - APOLLO_PROXY_URL: http://r101-apollo.blah.localhost
+      - APOLLO_PROXY_COOKIE_DOMAIN: .blah.localhost
+
     resource_class: small
 
     steps:
