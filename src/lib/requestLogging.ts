@@ -22,7 +22,15 @@ export function getOperationName(body: any): string | null {
   if (body.operationName) {
     return body.operationName;
   }
-  const match = body.query.match(/(query|mutation) (\w+).* {/);
+  let parsedBody = body;
+  if (typeof body === 'string') {
+    try {
+      parsedBody = JSON.parse(body);
+    } catch (e) {
+      return null;
+    }
+  }
+  const match = parsedBody.query.match(/(query|mutation) (\w+).* {/);
   if (match) {
     return match[2];
   }
