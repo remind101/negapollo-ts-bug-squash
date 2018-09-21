@@ -90,6 +90,10 @@ export default function initApp() {
       deproxyHeaders[FORCE_DEPROXY_HEADER] = '1';
       statsd.increment('negapollo.log_diff.start');
 
+      rollbar.debug('negapollo.log_result_diff.sending_dark_launch_request', {
+        uri: queryUrl,
+      });
+
       return rp({
         uri: queryUrl,
         method: req.method,
