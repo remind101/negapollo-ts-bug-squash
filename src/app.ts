@@ -11,6 +11,8 @@ import url from 'url';
 import { FORCE_DEPROXY_HEADER } from 'lib/headers';
 import { logRequestReceived } from 'lib/requestLogging';
 
+const darkLaunchHost = 'r101-apollo.empire';
+const darkLaunchProtocol = 'http';
 export const apolloUrl = url.parse(process.env.APOLLO_PROXY_URL || 'https://www.classchirp.com');
 const cookieDomain = process.env.APOLLO_PROXY_COOKIE_DOMAIN || '.classchirp.com';
 
@@ -77,10 +79,11 @@ export default function initApp() {
           // not going to log here.
         }
 
+        const origUrl = url.parse(req.originalUrl);
         const fullUrl = url.format({
-          protocol: req.protocol,
-          host: req.get('host'),
-          pathname: req.originalUrl,
+          protocol: darkLaunchProtocol,
+          host: darkLaunchHost,
+          pathname: origUrl.pathname,
         });
         setTimeout(() => this.logDiff(fullUrl, req), 10);
       });
