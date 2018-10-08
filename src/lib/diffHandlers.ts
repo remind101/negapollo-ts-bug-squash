@@ -65,11 +65,11 @@ export const recordProxyResult = function(proxyRes, req, res) {
                 error: inflateError,
               },
             );
-          } else {
+          } else if (isChatQuery(res.locals.originalBody)) {
             requestAndLogQuery(fullUrl, req, res, inflated);
           }
         });
-      } else {
+      } else if (isChatQuery(res.locals.originalBody)) {
         requestAndLogQuery(fullUrl, req, res, oldResponseBuffer);
       }
     });
@@ -87,6 +87,11 @@ const requestAndLogQuery = (fullUrl: string, req: any, res: any, responseBuffer:
     const oldResponse = responseBuffer.toString();
     logDiff(body, oldResponse);
   });
+};
+
+const isChatQuery = (body: Object): boolean => {
+  const queryString = JSON.stringify(body);
+  return queryString.search(/chats/i) !== -1;
 };
 
 export const makeDarkLaunchRequest = (
