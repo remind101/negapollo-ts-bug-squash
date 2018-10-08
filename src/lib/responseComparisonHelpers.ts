@@ -1,12 +1,12 @@
-import express from 'express';
 import { isEqual } from 'lodash';
-import { logRequestReceived } from 'lib/requestLogging';
 import rollbar from 'lib/rollbar';
-import rp from 'request-promise-native';
 import statsd from 'lib/statsd';
-import url from 'url';
 
-export default function logGraphqlResHitMissMismatch(newResult, oldResult, datadogKey): void {
+export default function logGraphqlResHitMissMismatch(
+  newResult: object,
+  oldResult: object,
+  datadogKey: string,
+): void {
   if (!oldResult && !newResult) {
     statsd.increment(`${datadogKey}.match`);
   } else if (!oldResult && newResult) {
