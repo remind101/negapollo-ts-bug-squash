@@ -85,7 +85,7 @@ const requestAndLogQuery = (fullUrl: string, req: any, res: any, responseBuffer:
       });
     }
     const oldResponse = responseBuffer.toString();
-    logDiff(body, oldResponse);
+    logDiff(body, oldResponse, res.locals.originalBody);
   });
 };
 
@@ -116,7 +116,7 @@ export const makeDarkLaunchRequest = (
   );
 };
 
-export const logDiff = (response: string, oldResponse: string): void => {
+export const logDiff = (response: string, oldResponse: string, query: object): void => {
   statsd.increment('negapollo.log_result_diff.start');
   let parsedResponse;
 
@@ -137,6 +137,7 @@ export const logDiff = (response: string, oldResponse: string): void => {
     logGraphqlResHitMissMismatch(
       parsedResponse,
       parsedOldResponse,
+      query,
       'negapollo.log_result_diff.compare_response_bodies',
     );
   } catch (err) {

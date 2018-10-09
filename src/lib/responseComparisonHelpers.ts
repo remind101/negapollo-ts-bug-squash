@@ -6,6 +6,7 @@ import statsd from 'lib/statsd';
 export default function logGraphqlResHitMissMismatch(
   newResult: object,
   oldResult: object,
+  query: object,
   datadogKey: string,
 ): void {
   if (!oldResult && !newResult) {
@@ -19,7 +20,11 @@ export default function logGraphqlResHitMissMismatch(
     statsd.increment(`${datadogKey}.match`);
   } else {
     statsd.increment(`${datadogKey}.mismatch`);
-    rollbar.debug(`${datadogKey} mismatch between new and old results`, { oldResult, newResult });
+    rollbar.debug(`${datadogKey} mismatch between new and old results`, {
+      oldResult: JSON.stringify(oldResult),
+      newResult: JSON.stringify(newResult),
+      origQuery: JSON.stringify(query),
+    });
   }
 }
 
