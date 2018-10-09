@@ -30,9 +30,11 @@ export function getOperationName(body: any): string | null {
       return null;
     }
   }
-  const match = parsedBody.query.match(/(query|mutation) (\w+).* {/);
-  if (match) {
-    return match[2];
+  if (parsedBody.query) {
+    const match = parsedBody.query.match(/(query|mutation) (\w+).* {/);
+    if (match) {
+      return match[2];
+    }
   }
   return null;
 }
