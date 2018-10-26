@@ -1,7 +1,9 @@
 FROM node:10.9.0
 MAINTAINER Sophie Dawson <sophie@remind101.com>
 
-RUN npm install -g yarn@1.9.4
+RUN apt-get update && \
+  apt-get install -y vim jq && \
+  npm install -g yarn@1.9.4
 
 RUN mkdir -p /home/app
 WORKDIR /home/app
