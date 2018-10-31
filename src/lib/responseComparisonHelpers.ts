@@ -29,7 +29,13 @@ export default function logGraphqlResHitMissMismatch(
 }
 
 const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
-  const urlFieldsToNormalize = ['profilePictureUrl', 'profilePhotoUrl', 'avatarUrl', 'url'];
+  const urlFieldsToNormalize = [
+    'profilePictureUrl',
+    'profilePhotoUrl',
+    'avatarUrl',
+    'url',
+    'contentUrl',
+  ];
   return (first: any, second: any, key?: any): boolean | void => {
     if (typeof first === 'string' && typeof second === 'string') {
       if (key && includes(urlFieldsToNormalize, key)) {
