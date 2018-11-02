@@ -2,12 +2,14 @@ import { includes, isEqualWith } from 'lodash';
 import normalizeUrl from 'normalize-url';
 import rollbar from 'lib/rollbar';
 import statsd from 'lib/statsd';
+import reqToCurl from 'lib/reqToCurl';
 
 export default function logGraphqlResHitMissMismatch(
   newResult: object,
   oldResult: object,
   query: object,
   datadogKey: string,
+  req: object,
 ): void {
   if (!oldResult && !newResult) {
     statsd.increment(`${datadogKey}.match`);
@@ -24,6 +26,7 @@ export default function logGraphqlResHitMissMismatch(
       oldResult: JSON.stringify(oldResult),
       newResult: JSON.stringify(newResult),
       origQuery: JSON.stringify(query),
+      reqToCurl: reqToCurl(req),
     });
   }
 }

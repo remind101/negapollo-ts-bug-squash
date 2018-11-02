@@ -12,7 +12,7 @@ describe('the response comparison mismatch helper', () => {
     statsd.increment = jest.fn();
     const newResult = fixtures.getJSON('query.class_stream_sections.new_result.1.json');
     const oldResult = fixtures.getJSON('query.class_stream_sections.old_result.1.json');
-    logGraphqlResHitMissMismatch(newResult, oldResult, TEST_QUERY, TEST_DD_KEY);
+    logGraphqlResHitMissMismatch(newResult, oldResult, TEST_QUERY, TEST_DD_KEY, {});
     expect(statsd.increment).toHaveBeenCalledTimes(1);
     expect(statsd.increment).toHaveBeenCalledWith(`${TEST_DD_KEY}.match`);
   });
