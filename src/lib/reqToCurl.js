@@ -55,7 +55,12 @@ const _buildCurl = function buildCurl(params) {
 const reqToCurl = function what(req) {
   const curlParams = {};
   // @ts-ignore
-  curlParams.url = `${req.protocol}://${req.headers.host || req.hostname}${req.originalUrl}`;
+  let host = req.hostname;
+  if (req.headers) {
+    ({ host } = req.headers);
+  }
+
+  curlParams.url = `${req.protocol}://${host}${req.originalUrl}`;
   // @ts-ignore
   curlParams.verb = req.method.toUpperCase();
   // @ts-ignore
