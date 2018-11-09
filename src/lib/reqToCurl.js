@@ -62,7 +62,10 @@ const reqToCurl = function what(req) {
 
   curlParams.url = `${req.protocol}://${host}${req.originalUrl}`;
   // @ts-ignore
-  curlParams.verb = req.method.toUpperCase();
+  curlParams.verb = 'GET';
+  if (req.method) {
+    curlParams.verb = req.method.toUpperCase();
+  }
   // @ts-ignore
   if (req.headers) {
     curlParams.headers = req.headers;
