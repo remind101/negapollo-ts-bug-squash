@@ -47,6 +47,15 @@ const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
         return firstCdn === secondCdn;
       }
     }
+
+    if (key && key === 'lastReadSequence') {
+      const firstSeq = parseInt(first, 10);
+      const secondSeq = parseInt(second, 10);
+      if (Math.abs(firstSeq - secondSeq) < 5) {
+        return true;
+      }
+    }
+
     return undefined;
   };
 };
