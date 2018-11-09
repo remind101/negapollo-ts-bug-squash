@@ -39,6 +39,8 @@ const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
     'url',
     'contentUrl',
   ];
+  const fieldsToIgnore = ['unreadMessagesCount', 'queryKey'];
+
   return (first: any, second: any, key?: any): boolean | void => {
     if (typeof first === 'string' && typeof second === 'string') {
       if (key && includes(urlFieldsToNormalize, key)) {
@@ -48,7 +50,7 @@ const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
       }
     }
 
-    if (key && key === 'lastReadSequence') {
+    if (key === 'lastReadSequence') {
       const firstSeq = parseInt(first, 10);
       const secondSeq = parseInt(second, 10);
       if (Math.abs(firstSeq - secondSeq) < 5) {
@@ -56,7 +58,7 @@ const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
       }
     }
 
-    if (key === 'queryKey') {
+    if (key && includes(fieldsToIgnore, key)) {
       return true;
     }
 
