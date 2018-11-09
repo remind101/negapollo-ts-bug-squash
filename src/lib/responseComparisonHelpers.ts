@@ -56,6 +56,10 @@ const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
       }
     }
 
+    if (key === 'queryKey') {
+      return true;
+    }
+
     return undefined;
   };
 };
