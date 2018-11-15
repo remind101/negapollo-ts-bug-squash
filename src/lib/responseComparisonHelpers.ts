@@ -57,12 +57,8 @@ const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
       }
     }
 
-    if (key === 'lastReadSequence') {
-      const firstSeq = parseInt(first, 10);
-      const secondSeq = parseInt(second, 10);
-      if (Math.abs(firstSeq - secondSeq) < 5) {
-        return true;
-      }
+    if (key === 'lastReadSequence' && !!first && !!second) {
+      return true;
     }
 
     if (key && includes(fieldsToIgnore, key)) {

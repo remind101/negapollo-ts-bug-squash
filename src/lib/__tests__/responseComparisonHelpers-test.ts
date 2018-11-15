@@ -29,18 +29,18 @@ describe('the response comparison mismatch helper', () => {
   });
 
   describe("when there's a large mismatch in lastReadSequence", () => {
-    it('considers the two responses to be mismatched', () => {
+    it('considers the two responses to match', () => {
       statsd.increment = jest.fn();
       const newResult = fixtures.getJSON('query.class_stream_sections.new_result.3.json');
       const oldResult = fixtures.getJSON('query.class_stream_sections.old_result.3.json');
       logGraphqlResHitMissMismatch(newResult, oldResult, TEST_QUERY, TEST_DD_KEY, {});
       expect(statsd.increment).toHaveBeenCalledTimes(1);
-      expect(statsd.increment).toHaveBeenCalledWith(`${TEST_DD_KEY}.mismatch`);
+      expect(statsd.increment).toHaveBeenCalledWith(`${TEST_DD_KEY}.match`);
     });
   });
 
-  describe("when there's a large mismatch in lastReadSequence", () => {
-    it('considers the two responses to be mismatched', () => {
+  describe("when there's a mismatch in queryKey", () => {
+    it('considers the two responses to match', () => {
       statsd.increment = jest.fn();
       const newResult = fixtures.getJSON('query.class_stream_sections.new_result.4.json');
       const oldResult = fixtures.getJSON('query.class_stream_sections.old_result.4.json');
