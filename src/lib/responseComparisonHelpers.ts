@@ -39,7 +39,14 @@ const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
     'url',
     'contentUrl',
   ];
-  const fieldsToIgnore = ['unreadMessagesCount', 'queryKey'];
+  const fieldsToIgnore = [
+    'unreadMessagesCount',
+    'queryKey',
+    'subscribers_count',
+    'memberships_count',
+    'membershipsCount',
+    'count',
+  ];
 
   return (first: any, second: any, key?: any): boolean | void => {
     if (typeof first === 'string' && typeof second === 'string') {
