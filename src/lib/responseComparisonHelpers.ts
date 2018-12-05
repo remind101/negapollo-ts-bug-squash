@@ -34,6 +34,7 @@ export default function logGraphqlResHitMissMismatch(
 const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
   const urlFieldsToNormalize = [
     'profilePictureUrl',
+    'profile_picture_url',
     'profilePhotoUrl',
     'avatarUrl',
     'url',
