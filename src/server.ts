@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import initApp from 'app';
 
-const GRAPHQL_PORT = process.env.PORT || 8080;
+const GRAPHQL_PORT = process.env.PORT || 8081;
 
 const env = process.env.NODE_ENV || 'no-env';
 

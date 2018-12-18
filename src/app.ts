@@ -15,7 +15,8 @@ export default function initApp() {
   app.use(rollbar.errorHandler());
   app.use(cookieParser());
 
-  app.get('/boom', (req: express.Request, res: express.Response) => {
+  // using /boom will prevent us from testing /boom on r101-apollo
+  app.get('/negboom', (req: express.Request, res: express.Response) => {
     rollbar.error('Test error');
     res.status(500).send('Just a test error');
   });
@@ -42,41 +43,15 @@ export default function initApp() {
     }),
   );
 
-  app.post('/graphiql', (req, res, next) => {
-    res.locals.originalBody = req.body;
-    next();
-  });
-
-  app.post(
-    '/graphiql',
+  // Everything else gets passed to apollo
+  app.all(
+    '*',
     proxy({
       target: url.format(apolloUrl),
       changeOrigin: true,
       cookieDomainRewrite: cookieDomain,
-      onProxyReq: restream,
-      onProxyRes: recordProxyResult,
     }),
   );
-
-  app.get('/graphiql', (req, res, next) => {
-    res.locals.originalBody = req.body;
-    next();
-  });
-
-  app.get(
-    '/graphiql',
-    proxy({
-      target: url.format(apolloUrl),
-      changeOrigin: true,
-      cookieDomainRewrite: cookieDomain,
-      onProxyReq: restream,
-      onProxyRes: recordProxyResult,
-    }),
-  );
-
-  app.use((req: express.Request, res: express.Response) => {
-    res.status(404).send('Not Found');
-  });
 
   return app;
 }
