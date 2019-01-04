@@ -49,4 +49,15 @@ describe('the response comparison mismatch helper', () => {
       expect(statsd.increment).toHaveBeenCalledWith(`${TEST_DD_KEY}.match`);
     });
   });
+
+  describe("when there's a mismatch in the order of membership nodes", () => {
+    it('considers the two response to match anyway', () => {
+      statsd.increment = jest.fn();
+      const newResult = fixtures.getJSON('query.load_chats.new_result.1.json');
+      const oldResult = fixtures.getJSON('query.load_chats.old_result.1.json');
+      logGraphqlResHitMissMismatch(newResult, oldResult, TEST_QUERY, TEST_DD_KEY, {});
+      expect(statsd.increment).toHaveBeenCalledTimes(1);
+      expect(statsd.increment).toHaveBeenCalledWith(`${TEST_DD_KEY}.match`);
+    });
+  });
 });

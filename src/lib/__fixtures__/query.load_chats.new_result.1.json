@@ -1,0 +1,102 @@
+{
+  "data": {
+    "chatStreams": [
+      {
+        "uuid": "b79bfcd9-4ea8-4aed-9240-e5b69104909b",
+        "active": true,
+        "memberships": {
+          "nodes": [
+            {
+              "id": 142960,
+              "state": "present",
+              "can_remove": true,
+              "user": {
+                "id": 88290,
+                "uuid": "56ab0248-b9e3-4257-9156-0f24c223e3c4",
+                "role": "teacher",
+                "name": "C. DDDD",
+                "first_name": "CCCC",
+                "last_name": "DDDD",
+                "blocked": false,
+                "color": "38B88D",
+                "initials": "D",
+                "signature": "C. DDDD",
+                "profile_picture_url": null,
+                "chat_eligibility_state": "unavailable",
+                "canImproveContactability": false,
+                "contactability_status": "rich",
+                "__typename": "RelatedUser"
+              }
+            },
+            {
+              "id": 142961,
+              "state": "present",
+              "can_remove": true,
+              "user": {
+                "id": 92637,
+                "uuid": "8b534549-fab7-41e3-bf6a-690dd1504ddd",
+                "role": "teacher",
+                "name": "Mrs. T",
+                "first_name": "Dumb",
+                "last_name": "Dummie",
+                "blocked": false,
+                "color": "5D60A5",
+                "initials": "T",
+                "signature": "Mrs. T",
+                "profile_picture_url": null,
+                "chat_eligibility_state": "eligible",
+                "canImproveContactability": false,
+                "contactability_status": "rich",
+                "__typename": "RelatedUser"
+              }
+            },
+            {
+              "id": 142962,
+              "state": "present",
+              "can_remove": true,
+              "user": {
+                "id": 92909,
+                "uuid": "12b1f81d-f7ad-4d79-bbba-f9813a9d5954",
+                "role": "student",
+                "name": "Sophie Dawson",
+                "first_name": "Sophie",
+                "last_name": "Dawson",
+                "blocked": false,
+                "color": "1D3257",
+                "initials": "SD",
+                "signature": "Sophie Dawson",
+                "profile_picture_url": null,
+                "chat_eligibility_state": "eligible",
+                "canImproveContactability": true,
+                "contactability_status": "poor",
+                "__typename": "RelatedUser"
+              }
+            },
+            {
+              "id": 142963,
+              "state": "present",
+              "can_remove": true,
+              "user": {
+                "id": 131275,
+                "uuid": "11dd69a9-4de8-4caa-85f3-c21b37a45236",
+                "role": "student",
+                "name": "Staging Jessie Serrino",
+                "first_name": "Staging Jessie",
+                "last_name": "Serrino",
+                "blocked": false,
+                "color": "38B88D",
+                "initials": "SS",
+                "signature": "Staging Jessie ...",
+                "profile_picture_url": null,
+                "chat_eligibility_state": "eligible",
+                "canImproveContactability": true,
+                "contactability_status": "poor",
+                "__typename": "RelatedUser"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

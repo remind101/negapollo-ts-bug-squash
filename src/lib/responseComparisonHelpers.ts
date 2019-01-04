@@ -58,6 +58,14 @@ const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
       }
     }
 
+    // Nodes are typically used to list memberships in a chat, but their order
+    // isn't guaranteed, so this just makes the equality check less strict.
+    if (key === 'nodes') {
+      if (Array.isArray(first) && Array.isArray(second)) {
+        return first.length === second.length;
+      }
+    }
+
     if (key === 'lastReadSequence' && !!first && !!second) {
       return true;
     }
