@@ -5,7 +5,7 @@ import statsd from 'lib/statsd';
 import url from 'url';
 import zlib from 'zlib';
 
-import { FORCE_DEPROXY_HEADER } from 'lib/headers';
+import { FORCE_V2_CLASS_DEPROXY_HEADER } from 'lib/headers';
 import { logRequestReceived } from 'lib/requestLogging';
 
 const darkLaunchHost = 'r101-apollo.empire';
@@ -34,7 +34,7 @@ export const recordProxyResult = function(proxyRes, req, res) {
   // data needed to make a deproxied request and diff the two graphql
   // responses, so the early return below is used to stop the event
   // handlers from being used when making a deproxied request.
-  if (req.headers[FORCE_DEPROXY_HEADER]) {
+  if (req.headers[FORCE_V2_CLASS_DEPROXY_HEADER]) {
     return;
   }
   statsd.increment('negapollo.record_proxy_result.start');
@@ -103,7 +103,7 @@ export const makeDarkLaunchRequest = (
   statsd.increment('negapollo.make_dark_launch_request.start');
 
   const deproxyHeaders = Object.assign({}, req.headers);
-  deproxyHeaders[FORCE_DEPROXY_HEADER] = '1';
+  deproxyHeaders[FORCE_V2_CLASS_DEPROXY_HEADER] = '1';
   rp(
     {
       uri: queryUrl,

@@ -12,4 +12,4 @@ export const USER_ID_HEADER = 'R101-Auth-User-Id'.toLowerCase();
 
 export const REQUEST_ID_HEADER = 'X-Request-Id'.toLowerCase();
 
-export const FORCE_DEPROXY_HEADER = 'X-Force-Graphql-Deproxy'.toLowerCase();
+export const FORCE_V2_CLASS_DEPROXY_HEADER = 'X-Force-V2-Class-Graphql-Deproxy'.toLowerCase();
