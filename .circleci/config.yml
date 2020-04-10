@@ -1,4 +1,13 @@
-version: 2
+version: 2.1
+
+orbs:
+  # docker vulnerability scanning with AWS ECR
+  # reference this is the orb usage guide for aws-ecr:
+  # https://circleci.com/orbs/registry/orb/circleci/aws-ecr
+  # required environment variables:
+  # https://circleci.com/docs/2.0/ecs-ecr/#configure-circleci-environment-variables
+  aws-ecr: circleci/aws-ecr@6.8.1
+  
 workflows:
   version: 2
   build-and-test:
@@ -6,6 +15,25 @@ workflows:
       - docker_image:
           context: docker-hub
       - test
+      
+        # use aws-ecr CircleCI Orb as a docker image vulnerability scanner.
+        # https://remind.quip.com/g20MAhrELmha/Chapter-16-Security-Automation
+      - aws-ecr/build-and-push-image:
+            name: docker_image_and_vuln_scanning_with_ecr
+            # docker vulnerability scanning with AWS ECR!
+            #
+            # https://circleci.com/orbs/registry/orb/circleci/aws-ecr
+            # https://circleci.com/docs/2.0/ecs-ecr/
+            #
+            # The AWS ECR repo name, example: remind101/acme-inc
+            repo: "$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
+            # tags for this image, comma separated.
+            tag: "latest,$CIRCLE_BRANCH,$CIRCLE_SHA1"
+            # create the AWS ECR repo if it does not exist already.
+            create-repo: true
+            # provide the aws-ecr context (environment variables) to push docker_image into ecr.
+            # https://circleci.com/docs/2.0/ecs-ecr/#configure-circleci-environment-variables
+            context: aws-ecr
 
 jobs:
 
@@ -47,7 +75,7 @@ jobs:
           key: v1-dependencies-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-
+        
       - run: yarn prettier:check
       - run: yarn lint
       - run: yarn type-check
