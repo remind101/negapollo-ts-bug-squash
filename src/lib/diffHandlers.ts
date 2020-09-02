@@ -65,11 +65,11 @@ export const recordProxyResult = function(proxyRes, req, res) {
                 error: inflateError,
               },
             );
-          } else if (isChatQuery(res.locals.originalBody)) {
+          } else if (isClassQuery(res.locals.originalBody)) {
             requestAndLogQuery(fullUrl, req, res, inflated);
           }
         });
-      } else if (isChatQuery(res.locals.originalBody)) {
+      } else if (isClassQuery(res.locals.originalBody)) {
         requestAndLogQuery(fullUrl, req, res, oldResponseBuffer);
       }
     });
@@ -87,6 +87,11 @@ const requestAndLogQuery = (fullUrl: string, req: any, res: any, responseBuffer:
     const oldResponse = responseBuffer.toString();
     logDiff(body, oldResponse, res.locals.originalBody, req);
   });
+};
+
+const isClassQuery = (body: Object): boolean => {
+  const queryString = JSON.stringify(body);
+  return queryString.search(/classes/i) !== -1;
 };
 
 const isChatQuery = (body: Object): boolean => {

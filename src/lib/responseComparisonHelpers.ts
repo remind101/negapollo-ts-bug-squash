@@ -18,7 +18,7 @@ export default function logGraphqlResHitMissMismatch(
     rollbar.debug(`${datadogKey} mismatch between new and old results`, { oldResult, newResult });
   } else if (!newResult && oldResult) {
     statsd.increment(`${datadogKey}.miss`);
-  } else if (isEqualWith(newResult, oldResult, createComparator())) {
+  } else if (isEqualWith(newResult, oldResult, createClassComparator())) {
     statsd.increment(`${datadogKey}.match`);
   } else {
     statsd.increment(`${datadogKey}.mismatch`);
@@ -31,7 +31,11 @@ export default function logGraphqlResHitMissMismatch(
   }
 }
 
-const createComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
+const createClassComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
+  return;
+};
+
+const createChatComparator = (): ((f: any, s: any, k?: any) => boolean | void) => {
   const urlFieldsToNormalize = [
     'profilePictureUrl',
     'profile_picture_url',
