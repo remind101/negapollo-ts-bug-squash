@@ -1,5 +1,4 @@
 import logGraphqlResHitMissMismatch from 'lib/responseComparisonHelpers';
-import rollbar from 'lib/rollbar';
 import rp from 'request';
 import statsd from 'lib/statsd';
 import url from 'url';
@@ -8,17 +7,20 @@ import zlib from 'zlib';
 import { FORCE_V2_CLASS_DEPROXY_HEADER } from 'lib/headers';
 import { logRequestReceived } from 'lib/requestLogging';
 
-const darkLaunchHost = 'r101-apollo.empire';
-const darkLaunchProtocol = 'http';
+// const darkLaunchHost = 'www.classchirp.com';
+const darkLaunchHost = 'www.classchirp.com';
+const darkLaunchProtocol = 'https';
 
 // restream parsed body before proxying
 export const restream = function(proxyReq, req, res, options) {
   if (req.body) {
     statsd.increment('negapollo.restream.start');
     logRequestReceived(req, req.body);
+    console.log('bodyData');
+    console.log(req.body);
     const bodyData = JSON.stringify(req.body);
     // incase if content-type is application/x-www-form-urlencoded -> we need to change to application/json
-    proxyReq.setHeader('Content-Type', 'application/json');
+    // proxyReq.setHeader('Content-Type', 'application/json');
     proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
     // stream the content
     proxyReq.write(bodyData);
@@ -37,33 +39,41 @@ export const recordProxyResult = function(proxyRes, req, res) {
   if (req.headers[FORCE_V2_CLASS_DEPROXY_HEADER]) {
     return;
   }
-  statsd.increment('negapollo.record_proxy_result.start');
+
+  console.log('request!!!');
+  console.log(req.headers);
+  console.log('negapollo.record_proxy_result.start');
 
   let oldResponseBuffer = Buffer.from([]);
 
   proxyRes.on('data', data => {
+    console.log('received data!');
+    console.log('data:');
+    console.log(JSON.parse(data));
     oldResponseBuffer = Buffer.concat([oldResponseBuffer, data]);
   });
 
   proxyRes.on('end', () => {
     const origUrl = url.parse(req.originalUrl);
+    // console.log(origUrl);
+    // console.log(`origUrl.pathname: ${origUrl.pathname}`);
     const fullUrl = url.format({
       protocol: darkLaunchProtocol,
       host: darkLaunchHost,
       pathname: origUrl.pathname,
     });
 
+    console.log('full URL:');
+    console.log(fullUrl);
+
     process.nextTick(() => {
-      // Check for compressed (gzipped) response, and handle it
-      // if needed
+      // Check for compressed (gzipped) response and handle it if needed
       if (proxyRes.headers['content-encoding']) {
+        console.log('dealing with compressed response');
         zlib.unzip(oldResponseBuffer, (inflateError, inflated) => {
           if (inflateError) {
-            rollbar.error(
+            console.error(
               'negapollo.record_proxy_result failed to decompress compressed request response',
-              {
-                error: inflateError,
-              },
             );
           } else if (isClassQuery(res.locals.originalBody)) {
             requestAndLogQuery(fullUrl, req, res, inflated);
@@ -77,10 +87,9 @@ export const recordProxyResult = function(proxyRes, req, res) {
 };
 
 const requestAndLogQuery = (fullUrl: string, req: any, res: any, responseBuffer: Buffer): void => {
-  statsd.increment('negapollo.request_and_log_query.start');
   makeDarkLaunchRequest(fullUrl, req, res, (error, resp, body) => {
     if (error) {
-      rollbar.error('negapollo.request_and_log_query failed to make dark launch query', {
+      console.error('negapollo.request_and_log_query failed to make dark launch query', {
         error,
       });
     }
@@ -91,12 +100,7 @@ const requestAndLogQuery = (fullUrl: string, req: any, res: any, responseBuffer:
 
 const isClassQuery = (body: Object): boolean => {
   const queryString = JSON.stringify(body);
-  return queryString.search(/classes/i) !== -1;
-};
-
-const isChatQuery = (body: Object): boolean => {
-  const queryString = JSON.stringify(body);
-  return queryString.search(/chats/i) !== -1;
+  return queryString.search(/nonV2ClassById/i) !== -1;
 };
 
 export const makeDarkLaunchRequest = (
@@ -105,14 +109,25 @@ export const makeDarkLaunchRequest = (
   res: any,
   callback: rp.RequestCallback,
 ) => {
-  statsd.increment('negapollo.make_dark_launch_request.start');
+  console.log('negapollo.make_dark_launch_request.start');
+  console.log(`queryUrl: ${queryUrl}`);
+  console.log('req');
+  console.log(req.method);
+  console.log('res');
+  console.log(res);
 
   const deproxyHeaders = Object.assign({}, req.headers);
   deproxyHeaders[FORCE_V2_CLASS_DEPROXY_HEADER] = '1';
+  // deproxyHeaders['host'] = 'classchirp.com';
+
+  console.log(`deproxy headers:`);
+  console.log(deproxyHeaders);
+  console.log(`og body:`);
+  console.log(res.locals.originalBody);
   rp(
     {
       uri: queryUrl,
-      gzip: true, // TODO: make this less hard-coded
+      gzip: true,
       method: req.method,
       headers: deproxyHeaders,
       body: JSON.stringify(res.locals.originalBody),
@@ -130,12 +145,14 @@ export const logDiff = (
   statsd.increment('negapollo.log_result_diff.start');
   let parsedResponse;
 
+  console.log('in log diff');
   try {
+    console.log(response);
     parsedResponse = JSON.parse(response);
-    statsd.increment('negapollo.log_result_diff.parse_dark_launch_query.success');
+    console.log('negapollo.log_result_diff.parse_dark_launch_query.success');
   } catch (err) {
     statsd.increment('negapollo.log_result_diff.parse_dark_launch_query.failure');
-    rollbar.error('negapollo.log_result_diff failed to parse dark launch query result', {
+    console.error('negapollo.log_result_diff failed to parse dark launch query result', {
       error: err,
     });
     return;
@@ -143,7 +160,7 @@ export const logDiff = (
 
   try {
     const parsedOldResponse = JSON.parse(oldResponse);
-    statsd.increment('negapollo.log_result_diff.parse_original_query.success');
+    console.log('negapollo.log_result_diff.parse_original_query.success');
     logGraphqlResHitMissMismatch(
       parsedResponse,
       parsedOldResponse,
@@ -152,8 +169,8 @@ export const logDiff = (
       req,
     );
   } catch (err) {
-    statsd.increment('negapollo.log_result_diff.parse_original_query.failure');
-    rollbar.error('negapollo.log_result_diff failed to parse original query result', {
+    console.log('negapollo.log_result_diff.parse_original_query.failure');
+    console.error('negapollo.log_result_diff failed to parse original query result', {
       error: err,
     });
   }

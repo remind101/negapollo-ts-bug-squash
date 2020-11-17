@@ -6,8 +6,8 @@ import rollbar from 'lib/rollbar';
 import url from 'url';
 import { restream, recordProxyResult } from 'lib/diffHandlers';
 
-export const apolloUrl = url.parse(process.env.APOLLO_PROXY_URL || 'https://www.classchirp.com');
-const cookieDomain = process.env.APOLLO_PROXY_COOKIE_DOMAIN || '.classchirp.com';
+export const apolloUrl = 'https://www.classchirp.com';
+const cookieDomain = '.classchirp.com';
 
 export default function initApp() {
   const app = express();
