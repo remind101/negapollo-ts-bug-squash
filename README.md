@@ -23,9 +23,9 @@ yarn install && yarn dev
 brew install httpie
 ````
 
-3. Go to https://www.classchirp.com and log in with the credentials provided by your interviewer. Make note of your auth token and CSRF token.
+3. Go to https://www.classchirp.com and log in with the credentials provided by your interviewer. Make note of your auth token and CSRF token. :sparkles:
 
-4. Make your first request using `httpie`!
+4. Make your first request!
 
 ```
 # The class ID in this request is correct for the account we've set up!
@@ -35,4 +35,4 @@ client_uuid=8b3eab46-deba-4f11-aa3f-9f7f78f8398c' Accept-Encoding:text x-csrf-to
 query="query="{ nonV2ClassById(id: 242461) { className, classCode, joinUrl } }""
 ```
 
-5. Check the server logs. As long as you see < TBD - desired log line >, you're good to go - happy bug squashing!
+5. Check the server logs. As long as you see < TBD - desired log line >, you're good to go - happy bug squashing! :bug: :beetle:
